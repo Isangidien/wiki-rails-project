@@ -32,4 +32,3 @@ source 'https://rubygems.org'
  end
 gem 'devise'
 gem 'bootstrap-sass'
-gem 'bootstrap-sass-rails', '~> 3.1.0.0'
