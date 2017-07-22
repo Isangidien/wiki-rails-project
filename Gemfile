@@ -24,7 +24,7 @@ source 'https://rubygems.org'
  group :development, :test do
    gem 'byebug'
    gem 'spring'
-   gem 'rspec-rails'
+   gem 'rspec-rails', '~> 3.0'
    gem 'shoulda'
    gem 'faker'
    gem 'factory_girl_rails'
@@ -32,3 +32,4 @@ source 'https://rubygems.org'
  end
 gem 'devise'
 gem 'bootstrap-sass'
+gem 'pundit'

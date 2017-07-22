@@ -1,10 +1,11 @@
 <div class="jumbotron">
+
   <% if user_signed_in? %>
     <h1>Welcome back, trusted user!</h1>
     <p class="lead">
-      You have signed in!  Some great conent will go here at a later time.
-    But this is just a test.  You might want to sign out now.
+      You have signed in!  If you want to check out some wikis click the green button, otherwise you might want to sign out now.
     </p>
+    <%= link_to "Bloc Wiki", wikis_path, :class => "btn btn-success" %>
     <%= link_to "Sign Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-large btn-danger' %>
   <% else %>
     <h1>Welcome, new user!</h1>
@@ -14,9 +15,8 @@
     </p>
     <div class="row-fluid">
       <div class="span6">
+      <div class="span6 offset2">
         <%= link_to "Sign In", new_user_session_path, :class => "btn btn-success" %>
-      </div>
-      <div class="span6">
         <%= link_to "Sign Up", new_user_registration_path, :class => "btn btn-success" %>
       </div>
     </div>
