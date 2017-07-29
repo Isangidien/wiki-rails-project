@@ -1,6 +1,6 @@
 class WikisController < ApplicationController
   def index
-    @wikis = Wiki.all
+    @wikis = Wiki.visible_to(current_user)
   end
 
   def show
@@ -12,14 +12,15 @@ class WikisController < ApplicationController
   end
 
   def create
-    @wiki = Wiki.new
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
+    @wiki = Wiki.new(wiki_params)
+    @wiki.user = current_user
+    @wiki.private = false if current_user.role == 'member'
+
     if @wiki.save
       flash[:notice] = "Wiki was saved."
       redirect_to @wiki
     else
-      flash.now[:alert] = "There was an error saving your wiki.  Please try again."
+      flash.now[:alert] = "There was an error saving the wiki. Please try again."
       render :new
     end
   end
@@ -30,14 +31,14 @@ class WikisController < ApplicationController
 
   def update
     @wiki = Wiki.find(params[:id])
-    @wiki.title = params[:wiki][:title]
-    @wiki.body = params[:wiki][:body]
+    @wiki.update_attributes(wiki_params)
 
+    authorize @wiki
     if @wiki.save
       flash[:notice] = "Wiki was updated."
       redirect_to @wiki
     else
-      flash.now[:alert] = "There was an error saving the wiki. Please try again."
+      flash.now[:alert] = "There was an error saving the post. Please try again."
       render :edit
     end
   end
@@ -48,10 +49,16 @@ class WikisController < ApplicationController
     if @wiki.destroy
       flash[:notice] = "\"#{@wiki.title}\" was deleted successfully."
       redirect_to wikis_path
-  else
+    else
       flash.now[:alert] = "There was an error deleting the wiki."
       render :show
     end
   end
 
+
+  private
+
+  def wiki_params
+    params.require(:wiki).permit(:title, :body, :private)
+  end
 end

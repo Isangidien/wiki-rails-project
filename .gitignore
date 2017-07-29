@@ -68,3 +68,6 @@ build-iPhoneSimulator/
 !/log/.keep
 /tmp
 >>>>>>> First commit and README update
+
+# Ignore application configuration
+/config/application.yml
