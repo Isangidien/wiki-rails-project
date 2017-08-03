@@ -1,8 +1,9 @@
 class ChargesController < ApplicationController
+
   def create
   #Creates a Stripe Customer object, for associating with the charge
     customer = Stripe::Customer.create(
-      email:current_user.email,
+      email: current_user.email,
       card: params[:stripeToken]
   )
 
@@ -13,7 +14,7 @@ class ChargesController < ApplicationController
     currency: 'usd'
   )
 
-  flash[:notice] = "Thanks for paying, #{current_user.email}! Feel free to pay me again if you want an upgrade."
+  flash[:notice] = "Thanks for paying, #{current_user.email}! You are now a premium member."
   redirect_to wikis_path(current_user)
 
   # upgrade user role to premium
@@ -29,7 +30,7 @@ class ChargesController < ApplicationController
   def new
     @stripe_btn_data = {
       key: "#{ Rails.configuration.stripe[:publishable_key] }",
-      description: "BigMoney remium Membership - #{current_user.email}",
+      description: "BigMoney premium Membership - #{current_user.email}",
       amount: Amount.default
     }
   end

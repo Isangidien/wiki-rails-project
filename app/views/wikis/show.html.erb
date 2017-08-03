@@ -1,6 +1,6 @@
 <% params %>
 <h1>Wiki Title: <%= @wiki.title %></h1>
-<p>Wiki Boby: <%= @wiki.body %></p>
+<p>Wiki Body: <%= markdown(@wiki.body) %></p>
 
 <div class="row">
   <div class="col-md-4">
