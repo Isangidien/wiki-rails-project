@@ -15,8 +15,14 @@ class User < ActiveRecord::Base
             format: { with: EMAIL_REGEX }
 
   has_many :wikis
+  has_many :collaborators
 
   after_initialize { self.role ||= :member }
 
   enum role: [:member, :admin, :premium]
+  delegate :wikis, to: :collaborators
+
+  def collaborators
+    Collaborator.where(user_id: id)
+  end
 end

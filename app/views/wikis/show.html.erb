@@ -2,6 +2,10 @@
 <h1>Wiki Title: <%= @wiki.title %></h1>
 <p>Wiki Body: <%= markdown(@wiki.body) %></p>
 
+<% if current_user.admin? || current_user.premium? %>
+  <p> Wiki Collaborator: <%= @wiki.user.email %></p>
+<% end %>
+
 <div class="row">
   <div class="col-md-4">
     <%= link_to "Edit Wiki", edit_wiki_path(@wiki), class: 'btn btn-success' %> |

@@ -1,6 +1,8 @@
 class WikisController < ApplicationController
+  before_filter :set_collaborators, only: [:new, :edit]
+
   def index
-    @wikis = Wiki.visible_to(current_user)
+    @wikis = policy_scope(Wiki)
   end
 
   def show
@@ -9,12 +11,15 @@ class WikisController < ApplicationController
 
   def new
     @wiki = Wiki.new
+    @selected_collaborator = nil
   end
 
   def create
     @wiki = Wiki.new(wiki_params)
     @wiki.user = current_user
     @wiki.private = false if current_user.role == 'member'
+    @wiki.save
+    @wiki.collaborators.create(wiki_id: @wiki_id, user_id: params[:wiki][:user_id])
 
     if @wiki.save
       flash[:notice] = "Wiki was saved."
@@ -27,6 +32,7 @@ class WikisController < ApplicationController
 
   def edit
     @wiki = Wiki.find(params[:id])
+    @selected_collaborator = @wiki.collaborators.first.user_id
   end
 
   def update
@@ -60,5 +66,9 @@ class WikisController < ApplicationController
 
   def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
+  end
+
+  def set_collaborators
+    @collaborators = User.all
   end
 end
